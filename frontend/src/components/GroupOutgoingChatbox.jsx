@@ -2,7 +2,7 @@ import { Check, CheckCheck, Trash2 } from "lucide-react"
 import GroupOutgoingImageBubble from "./GroupOutgoingImageBubble"
 import { useContext } from "react"
 import { GroupChatContext } from "../context/GroupChatContext"
-import GroupOutGoingImageAndCaptionBubble from "./GroupOutGoingImageAndCaptionBubble"
+import GroupOutgoingImageAndCaptionBubble from "./GroupOutgoingImageAndCaptionBubble"
 
 
 const GroupOutgoingChatbox = ({isSameSender,message}) => {
@@ -41,7 +41,7 @@ const GroupOutgoingChatbox = ({isSameSender,message}) => {
     }
     {
       message.image && message.text &&
-        <GroupOutGoingImageAndCaptionBubble isSameSender={isSameSender} message={message}/>
+        <GroupOutgoingImageAndCaptionBubble isSameSender={isSameSender} message={message}/>
     }
     </>
 
