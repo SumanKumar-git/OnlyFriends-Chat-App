@@ -2,7 +2,7 @@ import { Check, CheckCheck, Trash2 } from "lucide-react";
 import { useContext } from "react";
 import { GroupChatContext } from "../context/GroupChatContext";
 
-const GroupOutGoingImageAndCaptionBubble = ({isSameSender, message}) => {
+const GroupOutgoingImageAndCaptionBubble = ({isSameSender, message}) => {
 
     const {deleteGroupMessage} = useContext(GroupChatContext);
 
@@ -38,4 +38,4 @@ const GroupOutGoingImageAndCaptionBubble = ({isSameSender, message}) => {
     )
 }
 
-export default GroupOutGoingImageAndCaptionBubble
+export default GroupOutgoingImageAndCaptionBubble
