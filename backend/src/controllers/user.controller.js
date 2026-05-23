@@ -143,7 +143,7 @@ export const updateProfile = async (req, res) => {
         }
 
         if(profilePhoto){
-            if(user.profilePhoto){
+            if(user.profilePhotoPublicId){
                 await cloudinary.uploader.destroy(user.profilePhotoPublicId);
             }
             const upload = await cloudinary.uploader.upload(profilePhoto.path, {

@@ -77,12 +77,12 @@ const PToPVideoCallModal = () => {
 
             {/* Main Video Section */}
             <div className="relative w-full h-[90%] grow flex items-center justify-center pt-2 z-10">
-                <div className="relative w-full h-full rounded-3xl overflow-hidden bg-[#131317] border border-white/5 shadow-2xl flex items-center justify-center">
-                    
+                <div className="relative w-fit h-full rounded-3xl overflow-hidden bg-[#131317] border border-white/5 shadow-2xl flex items-center justify-center">
+
                     {/* Remote Video Element */}
                     <video
                         ref={remoteVideoRef}
-                        className="w-full h-full object-cover transition-opacity duration-300"
+                        className="w-full h-full object-contain transition-opacity duration-300"
                         autoPlay
                         playsInline
                         onPlaying={() => setIsRemoteVideoActive(true)}
@@ -114,13 +114,13 @@ const PToPVideoCallModal = () => {
                     )}
 
                     {/* Floating Local Video Frame (Picture in Picture) */}
-                    <div className="absolute top-3 right-3 w-44 h-56 bg-[#1a1a20] rounded-2xl overflow-hidden border-2 border-white/10 shadow-2xl z-20 group transition-all duration-300 hover:scale-105">
+                    <div className="absolute top-3 right-3 w-fit h-44 bg-[#1a1a20] rounded-2xl overflow-hidden border-2 border-white/10 shadow-2xl z-20 group transition-all duration-300 hover:scale-105">
                         {/* Local Video Element */}
-                        <video 
-                            ref={localVideoRef} 
-                            className={`w-full h-full object-cover ${isVideoMuted ? "opacity-0" : "opacity-100"} transition-opacity duration-300`} 
-                            autoPlay 
-                            muted 
+                        <video
+                            ref={localVideoRef}
+                            className={`w-full h-full scale-x-[-1] object-contain ${isVideoMuted ? "opacity-0" : "opacity-100"} transition-opacity  duration-300`}
+                            autoPlay
+                            muted
                             playsInline
                         />
                         {/* Muted video visual representation */}
@@ -141,7 +141,7 @@ const PToPVideoCallModal = () => {
                 
                 {/* Bottom Controls Bar */}
                 <div className=" w-full absolute bottom-2 flex justify-center items-center z-20">
-                    <div className="bg-[#1c1c24]/90 backdrop-blur-xl border border-white/10 px-8 py-4 rounded-full flex items-center gap-6 shadow-2xl transition-all duration-300 hover:bg-[#1c1c24]/95 shadow-black/40">
+                    <div className="bg-[#1c1c24]/90 backdrop-blur-xl border border-white/10 px-3 py-3 rounded-full flex items-center gap-6 shadow-2xl transition-all duration-300 shadow-black/40">
                         {/* Mute Self Audio Toggle */}
                         <button 
                             onClick={() => setIsMicMuted(!isMicMuted)} 
