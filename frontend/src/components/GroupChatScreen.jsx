@@ -129,8 +129,8 @@ const GroupChatScreen = () => {
     const isAdmin = selectedGroup?.groupAdmin?._id?.toString() === authUser?._id?.toString();
 
     return (
-        <div className="w-[47%] h-screen py-4">
-            <div className="w-full h-full bg-[#f9fafc] rounded-r-4xl">
+        <div className="w-[47%] h-screen py-3">
+            <div className="w-full h-full bg-[#f9fafc] rounded-r-3xl">
                 {
                     selectedGroup ? (
                         <>

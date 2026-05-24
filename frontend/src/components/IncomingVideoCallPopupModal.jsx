@@ -19,7 +19,7 @@ const IncomingVideoCallPopupModal = () => {
                     incomingCall?.callerInfo?.profilePhoto ? (
                         <img src={incomingCall?.callerInfo?.profilePhoto} alt="profile" className="w-12 h-12 rounded-lg object-cover" />
                     ) : (
-                        <div className="w-12 h-12 rounded-lg bg-gray-200 flex items-center justify-center">
+                        <div className="w-12 h-12 rounded-lg bg-black text-white font-semibold text-2xl flex items-center justify-center">
                             {
                                 incomingCall?.callerInfo?.fullName
                                 ?.split(" ")

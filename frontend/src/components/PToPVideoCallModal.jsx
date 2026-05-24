@@ -1,18 +1,20 @@
 import { useContext, useState, useEffect } from "react";
 import { CallContext } from "../context/CallContext";
 import { ChatContext } from "../context/ChatContext";
-import { Mic, MicOff, Video as VideoIcon, VideoOff, PhoneOff, Volume2, VolumeX, Maximize2 } from "lucide-react";
+import { AuthContext } from "../context/AuthContext";
+import { Mic, MicOff, Video as VideoIcon, VideoOff, PhoneOff, Volume2, VolumeX } from "lucide-react";
 
 const PToPVideoCallModal = () => {
     const {selectedUser} = useContext(ChatContext);
+    const {authUser} = useContext(AuthContext);
     const {localVideoRef, remoteVideoRef, localStream, remoteStream, endCall} = useContext(CallContext);
 
     // Local UI states for call interaction design
     const [isMicMuted, setIsMicMuted] = useState(false);
     const [isVideoMuted, setIsVideoMuted] = useState(false);
     const [isCallMuted, setIsCallMuted] = useState(false);
-    const [isFullscreen, setIsFullscreen] = useState(false);
     const [isRemoteVideoActive, setIsRemoteVideoActive] = useState(false);
+    const [selectedLayout, setSelectedLayout] = useState("default");
 
     // Reactively bind local stream to local video element when mounted or stream updates
     useEffect(() => {
@@ -62,27 +64,56 @@ const PToPVideoCallModal = () => {
                         </span>
                     </div>
                 </div>
-
-                {/* Modal Utility controls */}
-                <div className="flex items-center gap-2">
-                    <button
-                        onClick={() => setIsFullscreen(!isFullscreen)}
-                        className="bg-[#1b1b22]/80 hover:bg-[#282832] border border-white/5 text-white/80 hover:text-white p-2.5 rounded-full backdrop-blur-md transition-all shadow-lg cursor-pointer"
-                        title={isFullscreen ? "Exit Fullscreen" : "Fullscreen"}
+                {/* Layout Selection */}
+                <div className="bg-[#1b1b22]/80 backdrop-blur-md border border-white/5 p-1 rounded-xl flex items-center gap-1.5 text-white shadow-lg shadow-black/20">
+                    <button 
+                        onClick={() => setSelectedLayout("default")} 
+                        className={`flex items-center justify-center p-1.5 rounded-lg transition-all duration-200 cursor-pointer ${
+                            selectedLayout === "default" 
+                            ? "bg-[#7678ed]/20 border border-[#7678ed]/50 text-[#7678ed]" 
+                            : "bg-transparent border border-transparent text-white/40 hover:text-white/80 hover:bg-white/5"
+                        }`}
+                        title="Default (Picture-in-Picture) Layout"
                     >
-                        <Maximize2 size={16} />
+                        <div className={`w-8 h-6 border-2 ${selectedLayout === "default" ? "border-[#7678ed]" : "border-white/40"} rounded relative transition-colors`}>
+                            <div className={`absolute w-3 h-2 bottom-0.5 right-0.5 border ${selectedLayout === "default" ? "border-[#7678ed]" : "border-white/40"} rounded-sm bg-[#131317] transition-colors`}></div>
+                        </div>
+                    </button>
+                    <button 
+                        onClick={() => setSelectedLayout("split")} 
+                        className={`flex items-center justify-center p-1.5 rounded-lg transition-all duration-200 cursor-pointer ${
+                            selectedLayout === "split" 
+                            ? "bg-[#7678ed]/20 border border-[#7678ed]/50 text-[#7678ed]" 
+                            : "bg-transparent border border-transparent text-white/40 hover:text-white/80 hover:bg-white/5"
+                        }`}
+                        title="Split Screen Layout"
+                    >
+                        <div className="flex gap-0.5">
+                            <div className={`w-4 h-6 border-2 border-r-0 ${selectedLayout === "split" ? "border-[#7678ed]" : "border-white/40"} rounded-l transition-colors`}></div>
+                            <div className={`w-4 h-6 border-2 border-l-0 ${selectedLayout === "split" ? "border-[#7678ed]" : "border-white/40"} rounded-r transition-colors`}></div>
+                        </div>
                     </button>
                 </div>
             </div>
 
             {/* Main Video Section */}
-            <div className="relative w-full h-[90%] grow flex items-center justify-center pt-2 z-10">
-                <div className="relative w-fit h-full rounded-3xl overflow-hidden bg-[#131317] border border-white/5 shadow-2xl flex items-center justify-center">
-
-                    {/* Remote Video Element */}
+            <div className={`relative w-full h-[90%] grow flex ${
+                selectedLayout === "split" 
+                ? "flex-col md:flex-row-reverse gap-4 pb-24 md:pb-28" 
+                : "items-center justify-center"
+            } pt-2 z-10`}>
+                
+                {/* Remote Video Container */}
+                <div className={`rounded-3xl overflow-hidden bg-[#131317] border border-white/5 shadow-2xl flex items-center justify-center relative transition-all duration-300 ${
+                    selectedLayout === "split" 
+                    ? "flex-1 min-h-0 w-full h-full" 
+                    : "w-full h-full"
+                }`}>
                     <video
                         ref={remoteVideoRef}
-                        className="w-full h-full object-contain transition-opacity duration-300"
+                        className={`w-full h-full transition-all duration-300 ${
+                            selectedLayout === "split" ? "object-cover" : "object-contain"
+                        }`}
                         autoPlay
                         playsInline
                         onPlaying={() => setIsRemoteVideoActive(true)}
@@ -113,29 +144,62 @@ const PToPVideoCallModal = () => {
                         </div>
                     )}
 
-                    {/* Floating Local Video Frame (Picture in Picture) */}
-                    <div className="absolute top-3 right-3 w-fit h-44 bg-[#1a1a20] rounded-2xl overflow-hidden border-2 border-white/10 shadow-2xl z-20 group transition-all duration-300 hover:scale-105">
-                        {/* Local Video Element */}
-                        <video
-                            ref={localVideoRef}
-                            className={`w-full h-full scale-x-[-1] object-contain ${isVideoMuted ? "opacity-0" : "opacity-100"} transition-opacity  duration-300`}
-                            autoPlay
-                            muted
-                            playsInline
-                        />
-                        {/* Muted video visual representation */}
-                        {isVideoMuted && (
-                            <div className="absolute inset-0 bg-[#16161a] flex flex-col items-center justify-center">
-                                <div className="bg-[#202022] w-14 h-14 rounded-full border border-white/10 flex items-center justify-center text-white/80 font-bold text-lg">
-                                    You
-                                </div>
-                                <span className="text-[10px] text-white/50 mt-2 font-medium tracking-wide">Camera Muted</span>
-                            </div>
-                        )}
-
-                        <div className="absolute bottom-2.5 left-2.5 bg-black/60 backdrop-blur-md px-2 py-0.5 rounded-full text-[10px] font-semibold text-white/90 border border-white/5">
-                            You
+                    {/* Remote User Name Badge (Visible in split view) */}
+                    {selectedLayout === "split" && (
+                        <div className="absolute bottom-4 left-4 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full text-xs font-semibold text-white border border-white/10 shadow-lg select-none z-20">
+                            {selectedUser?.fullName || "User"}
                         </div>
+                    )}
+                </div>
+
+                {/* Local Video Container */}
+                <div className={`transition-all duration-300 overflow-hidden bg-[#1a1a20] shadow-2xl z-20 ${
+                    selectedLayout === "split"
+                    ? "flex-1 min-h-0 w-full h-full rounded-3xl border border-white/5 relative flex items-center justify-center"
+                    : "absolute top-3 right-3 w-fit h-44 rounded-2xl border-2 border-white/10 group hover:scale-105"
+                }`}>
+                    {/* Local Video Element */}
+                    <video
+                        ref={localVideoRef}
+                        className={`w-full h-full scale-x-[-1] transition-all duration-300 ${
+                            isVideoMuted ? "opacity-0" : "opacity-100"
+                        } ${
+                            selectedLayout === "split" ? "object-cover" : "object-contain"
+                        }`}
+                        autoPlay
+                        muted
+                        playsInline
+                    />
+                    
+                    {/* Muted video visual representation */}
+                    {isVideoMuted && (
+                        <div className="absolute inset-0 bg-[#16161a] flex flex-col items-center justify-center z-10">
+                            <div className={`bg-[#202022] rounded-full border border-white/10 flex items-center justify-center text-white/80 font-bold overflow-hidden transition-all duration-300 ${
+                                selectedLayout === "split" 
+                                ? "w-24 h-24 border-4 text-3xl" 
+                                : "w-16 h-16 text-lg"
+                            }`}>
+                                {authUser?.profilePhoto ? (
+                                    <img src={authUser.profilePhoto} alt={authUser.fullName} className="w-full h-full rounded-full object-cover" />
+                                ) : (
+                                    <span>{authUser?.fullName?.charAt(0).toUpperCase() || "You"}</span>
+                                )}
+                            </div>
+                            <span className={`text-white/50 font-medium tracking-wide mt-2 transition-all duration-300 ${
+                                selectedLayout === "split" ? "text-xs" : "text-[10px]"
+                            }`}>
+                                Camera Muted
+                            </span>
+                        </div>
+                    )}
+
+                    {/* Local User Name Badge */}
+                    <div className={`absolute bg-black/60 backdrop-blur-md text-white/90 border border-white/5 rounded-full font-semibold select-none z-20 transition-all duration-300 ${
+                        selectedLayout === "split"
+                        ? "bottom-4 left-4 px-3 py-1 text-xs"
+                        : "bottom-2.5 left-2.5 px-2 py-0.5 text-[10px]"
+                    }`}>
+                        You
                     </div>
                 </div>
                 

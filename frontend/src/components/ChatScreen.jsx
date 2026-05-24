@@ -18,7 +18,6 @@ const ChatScreen = () => {
     const [previewUrl, setPreviewUrl] = useState(null);
     const {selectedUser, sendMessage, allMessages, getMessages, setAllMessages, markMessagesSeen, isImageModalOpen} = useContext(ChatContext);
     const {onlineUsers, authUser} = useContext(AuthContext);
-    const { setIsCalling } = useContext(CallContext) || {};
     const {startCall, isCalling, callAccepted} = useContext(CallContext);
 
     const scrollEnd = useRef(null);
@@ -105,7 +104,7 @@ const ChatScreen = () => {
     const initials = selectedUser?.fullName?.split(' ').map((word) => word[0]).join('').toUpperCase();
 
     return (
-    <div className="w-[47%] h-screen py-4">
+    <div className="w-[47%] h-screen py-3">
         <div className="w-full h-full bg-[#f9fafc] rounded-r-3xl">
             {
                 selectedUser?(

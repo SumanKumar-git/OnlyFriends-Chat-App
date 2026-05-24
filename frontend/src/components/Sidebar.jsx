@@ -19,7 +19,7 @@ const Sidebar = () => {
   }
 
   return (
-    <div className='flex flex-col items-center gap-3 p-5 h-screen w-[8%]'>
+    <div className='flex flex-col items-center gap-3 p-3 h-screen w-[8%]'>
         <div className="h-[10%]">
           <h1 className="text-white text-3xl font-bold">OF</h1>
         </div>

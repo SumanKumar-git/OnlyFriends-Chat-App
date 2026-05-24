@@ -13,7 +13,7 @@ const ChatInfo = () => {
 
 
   return (
-    <div className="w-[23%] p-4 h-screen">
+    <div className="w-[23%] p-3 h-screen">
         <div className="w-full h-full bg-[#DCDCFE] px-1 rounded-3xl overflow-hidden">
             {/* Top */}
             {

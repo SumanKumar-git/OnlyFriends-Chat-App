@@ -54,8 +54,8 @@ const Profile = () => {
 
 
     return (
-    <div className="w-[92%] h-screen py-4 pr-4">
-        <div className="w-full h-full bg-[#f9fafc] rounded-4xl overflow-hidden flex flex-col">
+    <div className="w-[92%] h-screen py-3 pr-3">
+        <div className="w-full h-full bg-[#f9fafc] rounded-3xl overflow-hidden flex flex-col">
             {/* Heading Section */}
             <div className="w-full h-[10%] flex items-center border-b border-gray-200 px-8">
                 <h1 className="font-bold text-2xl text-gray-800">Profile Settings</h1>

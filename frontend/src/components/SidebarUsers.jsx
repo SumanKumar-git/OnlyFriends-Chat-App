@@ -17,7 +17,7 @@ const SidebarUsers = () => {
   }, []);
 
   return (
-    <div className='w-[22%] h-screen py-4'>
+    <div className='w-[22%] h-screen py-3'>
       <div className="w-full h-full bg-[#f9fafc] rounded-l-3xl flex flex-col pb-4 overflow-hidden">
       {/* Searchbar */}
       <div className='p-5'>

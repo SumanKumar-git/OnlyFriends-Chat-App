@@ -11,8 +11,8 @@ const GroupChatInfo = () => {
         .toUpperCase()
         .slice(0, 2);
     return (
-        <div className="w-[23%] h-screen p-4">
-            <div className="w-full h-full bg-[#DCDCFE] rounded-4xl overflow-hidden">
+        <div className="w-[23%] h-screen p-3">
+            <div className="w-full h-full bg-[#DCDCFE] rounded-3xl overflow-hidden">
                 {/* Top Section */}
                 {
                     selectedGroup ? (
