@@ -111,9 +111,7 @@ const PToPVideoCallModal = () => {
                 }`}>
                     <video
                         ref={remoteVideoRef}
-                        className={`w-full h-full transition-all duration-300 ${
-                            selectedLayout === "split" ? "object-cover" : "object-contain"
-                        }`}
+                        className={`w-full h-full transition-all duration-300 object-contain`}
                         autoPlay
                         playsInline
                         onPlaying={() => setIsRemoteVideoActive(true)}
@@ -163,9 +161,7 @@ const PToPVideoCallModal = () => {
                         ref={localVideoRef}
                         className={`w-full h-full scale-x-[-1] transition-all duration-300 ${
                             isVideoMuted ? "opacity-0" : "opacity-100"
-                        } ${
-                            selectedLayout === "split" ? "object-cover" : "object-contain"
-                        }`}
+                        } object-contain`}
                         autoPlay
                         muted
                         playsInline
