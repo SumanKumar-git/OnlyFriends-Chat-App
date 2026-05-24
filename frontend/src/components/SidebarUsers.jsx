@@ -17,8 +17,8 @@ const SidebarUsers = () => {
   }, []);
 
   return (
-    <div className='w-[22%] h-screen py-3'>
-      <div className="w-full h-full bg-[#f9fafc] rounded-l-3xl flex flex-col pb-4 overflow-hidden">
+    <div className='w-full h-full'>
+      <div className="w-full h-full bg-[#f9fafc] rounded-none md:rounded-l-3xl flex flex-col pb-4 overflow-hidden">
       {/* Searchbar */}
       <div className='p-5'>
         <div className="flex items-center bg-[#DCDCFE] p-3 rounded-xl w-full gap-4 border-2 border-transparent focus-within:border-2 focus-within:border-[#9b9bd3] transition-all">

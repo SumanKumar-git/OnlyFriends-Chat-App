@@ -17,11 +17,11 @@ const Register = () => {
     }
 
     return (
-    <main className="h-screen w-full flex items-center justify-center">
+    <main className="h-screen w-full flex items-center justify-center bg-gray-50 md:bg-transparent">
         {/* Main Container */}
-        <div className="w-[70%] h-[85%] shadow-[5px_5px_15px_rgba(0,0,0,0.1)] rounded-4xl flex flex-row justify-center items-center">
-            {/* Left Conatiner */}
-            <div className="bg-linear-to-r from-[#5859CA] to-[#6e70de] h-full w-[50%] rounded-l-4xl p-10">
+        <div className="w-full h-full md:w-[70%] md:h-[85%] bg-white shadow-none md:shadow-[5px_5px_15px_rgba(0,0,0,0.1)] rounded-none md:rounded-4xl flex flex-col md:flex-row justify-center items-center">
+            {/* Left Container */}
+            <div className="hidden md:block bg-linear-to-r from-[#5859CA] to-[#6e70de] h-full w-[50%] rounded-l-4xl p-10">
                 <h1 className="text-2xl font-bold text-white pb-10">OnlyFriends</h1>
                 <div className="flex flex-col gap-7">
                     <h2 className="text-4xl/12 text-white">
@@ -42,7 +42,7 @@ const Register = () => {
                 </div>
             </div>
             {/* Right Container */}
-            <div className="h-full w-[50%] rounded-r-4xl p-20 flex flex-col gap-8">
+            <div className="h-full w-full md:w-[50%] rounded-none md:rounded-r-4xl p-6 sm:p-12 md:p-20 flex flex-col justify-center gap-8 bg-white">
                 <div className="flex flex-col gap-3">
                     <h2 className="text-2xl font-semibold">Create Account</h2>
                     <p className="text-gray-700">Please fill in the details below to get started.</p>

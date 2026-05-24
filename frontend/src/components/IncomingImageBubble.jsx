@@ -10,7 +10,7 @@ const IncomingImageBubble = ({message, isSameSender}) => {
     return (
     <div className="w-full flex flex-row items-center justify-start">
         <div onClick={() => openImageModal(message)} className={`bg-[#DCDCFE] w-fit max-w-[70%] p-1 cursor-pointer ${isSameSender ? "rounded-xl" : "rounded-r-xl rounded-bl-xl"} flex flex-col gap-1`}>
-            <div className={` ${isPortrait ? "w-52 h-75" : "w-80 h-48"}  rounded-lg overflow-hidden`}>
+            <div className={`${isPortrait ? "w-52" : "w-80"} max-w-full rounded-lg overflow-hidden`} style={{ aspectRatio: isPortrait ? "52/75" : "80/48" }}>
                 <img src={message?.image} alt="chat-image" className="w-full h-full object-cover"/>
             </div>
             <div className="w-full flex flex-row justify-end items-center gap-2">

@@ -1,9 +1,10 @@
 import { useContext } from "react";
 import { ChatContext } from "../context/ChatContext";
 import { AuthContext } from "../context/AuthContext";
+import { ArrowLeft } from "lucide-react";
 
 
-const ChatInfo = () => {
+const ChatInfo = ({ onCloseInfo }) => {
 
   const {selectedUser, allMessages, openImageModal} = useContext(ChatContext);
   const {onlineUsers} = useContext(AuthContext);
@@ -13,13 +14,19 @@ const ChatInfo = () => {
 
 
   return (
-    <div className="w-[23%] p-3 h-screen">
-        <div className="w-full h-full bg-[#DCDCFE] px-1 rounded-3xl overflow-hidden">
+    <div className="w-full h-full">
+        <div className="w-full h-full bg-[#DCDCFE] px-1 rounded-none md:rounded-3xl overflow-hidden">
             {/* Top */}
             {
               selectedUser?(
                 <>
-                <div className="w-full h-[10%] px-3 flex items-center border-b border-[#9b9bd3]">
+                <div className="w-full h-[10%] px-3 flex items-center gap-3 border-b border-[#9b9bd3]">
+                  <button 
+                      onClick={onCloseInfo} 
+                      className="md:hidden text-gray-700 hover:text-gray-900 cursor-pointer"
+                  >
+                      <ArrowLeft className="w-6 h-6" />
+                  </button>
                   <h1 className="font-semibold text-xl">Chat Info</h1>
                 </div>
                 {/* Middle */}

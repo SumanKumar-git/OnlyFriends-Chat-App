@@ -1,7 +1,8 @@
 import { useContext } from "react";
 import { GroupChatContext } from "../context/GroupChatContext";
+import { ArrowLeft } from "lucide-react";
 
-const GroupChatInfo = () => {
+const GroupChatInfo = ({ onCloseInfo }) => {
     const {selectedGroup} = useContext(GroupChatContext);
 
     const initials = selectedGroup?.groupName
@@ -11,15 +12,21 @@ const GroupChatInfo = () => {
         .toUpperCase()
         .slice(0, 2);
     return (
-        <div className="w-[23%] h-screen p-3">
-            <div className="w-full h-full bg-[#DCDCFE] rounded-3xl overflow-hidden">
+        <div className="w-full h-full">
+            <div className="w-full h-full bg-[#DCDCFE] rounded-none md:rounded-3xl overflow-hidden">
                 {/* Top Section */}
                 {
                     selectedGroup ? (
                         <>
-                        <div className="w-full h-[10%] px-4 flex items-center border-b border-[#9b9bd3]">
-                    <h1 className="font-semibold text-xl">Group Info</h1>
-                </div>
+                        <div className="w-full h-[10%] px-4 flex items-center gap-3 border-b border-[#9b9bd3]">
+                            <button 
+                                onClick={onCloseInfo} 
+                                className="md:hidden text-gray-700 hover:text-gray-900 cursor-pointer"
+                            >
+                                <ArrowLeft className="w-6 h-6" />
+                            </button>
+                            <h1 className="font-semibold text-xl">Group Info</h1>
+                        </div>
 
                 {/* Middle Section */}
                 <div className="w-full h-[35%] px-3 flex flex-col items-center gap-2 border-b border-[#9b9bd3] py-4">

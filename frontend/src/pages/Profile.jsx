@@ -54,16 +54,16 @@ const Profile = () => {
 
 
     return (
-    <div className="w-[92%] h-screen py-3 pr-3">
-        <div className="w-full h-full bg-[#f9fafc] rounded-3xl overflow-hidden flex flex-col">
+    <div className="w-full flex-1 md:flex-none h-[calc(100vh-7.5rem)] md:h-screen md:py-3 md:pr-3">
+        <div className="w-full h-full bg-[#f9fafc] rounded-none md:rounded-3xl overflow-hidden flex flex-col">
             {/* Heading Section */}
-            <div className="w-full h-[10%] flex items-center border-b border-gray-200 px-8">
+            <div className="w-full py-4 border-b border-gray-200 px-6 md:px-8">
                 <h1 className="font-bold text-2xl text-gray-800">Profile Settings</h1>
             </div>
             {/* Main section */}
-            <div className="w-full h-[90%] flex justify-center flex-row gap-12 overflow-y-auto">
+            <div className="w-full flex-1 flex flex-col md:flex-row justify-start md:justify-center items-center md:items-start gap-8 md:gap-12 overflow-y-auto p-6 md:p-8">
                 {/* Left side for profile picture and upload */}
-                <div className="flex flex-col items-center gap-4 w-[35%] pt-5">
+                <div className="flex flex-col items-center gap-4 w-full md:w-[35%]">
                     <div className="relative group">
                         <div className="bg-[#202022] w-48 h-48 rounded-3xl flex items-center justify-center shadow-md transition-all duration-300 group-hover:shadow-lg">
                             {
@@ -94,7 +94,7 @@ const Profile = () => {
                     </div>
                 </div>
                 {/* Right side for profile details */}
-                <div className="flex flex-col gap-6 w-[50%] pt-4">
+                <div className="flex flex-col gap-6 w-full md:w-[50%]">
                     {/* Name Field */}
                     <div className="flex flex-col gap-2">
                         <label className="text-sm font-semibold text-gray-500 flex items-center gap-2 uppercase tracking-wide">
@@ -108,10 +108,10 @@ const Profile = () => {
                         </div>
                             ) : (
                                 <form onSubmit={handleSubmit} className="flex w-full gap-3">
-                            <div className="w-[85%] bg-[#EEEDFF] rounded-xl px-5 py-4 border-2 border-transparent hover:border-[#DCDCFE] transition-colors flex justify-between items-center group">
-                            <input type="text" value={fullName} onChange={(e) => setFullName(e.target.value)} className=" outline-none w-full text-gray-800 font-medium text-lg"/>
+                            <div className="flex-1 bg-[#EEEDFF] rounded-xl px-5 py-4 border-2 border-transparent hover:border-[#DCDCFE] transition-colors flex justify-between items-center group">
+                            <input type="text" value={fullName} onChange={(e) => setFullName(e.target.value)} className=" outline-none w-full text-gray-800 font-medium text-lg bg-transparent"/>
                             </div>
-                            <button type="submit" className="bg-[#7678ed] w-[15%] rounded-xl px-4 py-2 text-white font-medium  cursor-pointer hover:bg-[#5f61cb] transition-colors shadow-md">Save</button>
+                            <button type="submit" className="bg-[#7678ed] rounded-xl px-5 py-2 text-white font-medium cursor-pointer hover:bg-[#5f61cb] transition-colors shadow-md">Save</button>
                         </form>
                             )
                         }
@@ -143,10 +143,10 @@ const Profile = () => {
                         </div>
                             ) : (
                                 <form onSubmit={handleSubmit} className="flex w-full gap-3">
-                            <div className="w-[85%] bg-[#EEEDFF] rounded-xl px-5 py-4 border-2 border-transparent hover:border-[#DCDCFE] transition-colors flex justify-between items-center group">
-                            <input type="text" value={bio} onChange={(e) => setBio(e.target.value)} className=" outline-none w-full text-gray-800 font-medium text-base"/>
+                            <div className="flex-1 bg-[#EEEDFF] rounded-xl px-5 py-4 border-2 border-transparent hover:border-[#DCDCFE] transition-colors flex justify-between items-center group">
+                            <input type="text" value={bio} onChange={(e) => setBio(e.target.value)} className=" outline-none w-full text-gray-800 font-medium text-base bg-transparent"/>
                             </div>
-                            <button type="submit" className="bg-[#7678ed] w-[15%] rounded-xl px-4 py-2 text-white font-medium  cursor-pointer hover:bg-[#5f61cb] transition-colors shadow-md">Save</button>
+                            <button type="submit" className="bg-[#7678ed] rounded-xl px-5 py-2 text-white font-medium cursor-pointer hover:bg-[#5f61cb] transition-colors shadow-md">Save</button>
                         </form>
                             )
                         }

@@ -1,9 +1,9 @@
 import { useContext, useEffect } from "react";
-import { ChatContext } from "../context/ChatContext";
+import { GroupChatContext } from "../context/GroupChatContext";
 import { X } from "lucide-react";
 
-const ImageModal = () => {
-    const {closeImageModal, selectedImageMessage} = useContext(ChatContext);
+const GroupImageModal = () => {
+    const { closeImageModal, selectedImageMessage } = useContext(GroupChatContext);
 
     useEffect(() => {
         return () => {
@@ -29,7 +29,7 @@ const ImageModal = () => {
             </div>
             <X onClick={closeImageModal} className="absolute top-4 right-4 w-12 h-12 text-white/80 hover:text-white cursor-pointer z-50 transition-colors"/>
         </div>
-    )
-}
+    );
+};
 
-export default ImageModal
+export default GroupImageModal;

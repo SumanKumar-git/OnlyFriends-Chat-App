@@ -1,4 +1,4 @@
-import { EllipsisVertical ,Pin, Send, Image as ImageIcon, Video } from "lucide-react";
+import { EllipsisVertical, Pin, Send, Image as ImageIcon, Video, ArrowLeft } from "lucide-react";
 import IncomingChatbox from "./IncomingChatbox";
 import OutgoingChatbox from "./OutgoingChatbox";
 import { useContext, useEffect, useRef, useState } from "react";
@@ -7,18 +7,17 @@ import { ChatContext } from "../context/ChatContext";
 import { CallContext } from "../context/CallContext";
 import toast from "react-hot-toast";
 import ImageModal from "./ImageModal";
-import IncomingVideoCallPopupModal from "./IncomingVideoCallPopupModal";
-import PToPVideoCallModal from "./PToPVideoCallModal";
 
-const ChatScreen = () => {
+
+const ChatScreen = ({ onShowInfo }) => {
     const [message, setMessage] = useState("");
     const [image, setImage] = useState(null);
     const [height, setHeight] = useState(null);
     const [width, setWidth] = useState(null);
     const [previewUrl, setPreviewUrl] = useState(null);
-    const {selectedUser, sendMessage, allMessages, getMessages, setAllMessages, markMessagesSeen, isImageModalOpen} = useContext(ChatContext);
+    const {selectedUser, sendMessage, allMessages, getMessages, setAllMessages, markMessagesSeen, isImageModalOpen, setSelectedUser} = useContext(ChatContext);
     const {onlineUsers, authUser} = useContext(AuthContext);
-    const {startCall, isCalling, callAccepted} = useContext(CallContext);
+    const {startCall} = useContext(CallContext);
 
     const scrollEnd = useRef(null);
 
@@ -104,31 +103,40 @@ const ChatScreen = () => {
     const initials = selectedUser?.fullName?.split(' ').map((word) => word[0]).join('').toUpperCase();
 
     return (
-    <div className="w-[47%] h-screen py-3">
-        <div className="w-full h-full bg-[#f9fafc] rounded-r-3xl">
+    <div className="w-full h-full">
+        <div className="w-full h-full bg-[#f9fafc] rounded-none md:rounded-r-3xl flex flex-col justify-between overflow-hidden">
             {
                 selectedUser?(
                     <>
                         {/* Top section */}
             <div className="w-full h-[10%] border-b border-gray-300 p-4 flex flex-row items-center justify-between">
-                <div className="flex flex-row gap-5">
-                    <div className="bg-[#202022] shadow-md aspect-square w-12 h-12 flex items-center justify-center rounded-lg relative">
-                        {
-                            selectedUser?.profilePhoto ? (
-                                <img src={selectedUser?.profilePhoto} alt="Profile Photo" className="w-full h-full object-cover rounded-lg" />
-                            ) : (
-                                <h3 className="text-white font-semibold text-2xl">{initials}</h3>
-                            )
-                        }
-                        {
-                            onlineUsers.includes(selectedUser._id)&&(
-                                <div className="absolute bg-green-500 h-3 w-3 rounded-full -bottom-1 -right-1 border-2 border-white"></div>
-                            )
-                        }
-                    </div>
-                    <div className="flex flex-col justify-center gap-0.5">
-                        <h1 className="font-semibold text-xl capitalize">{selectedUser?.fullName}</h1>
-                        <p className="text-xs">{onlineUsers.includes(selectedUser._id)?"Online":"Offline"}</p>
+                <div className="flex flex-row items-center gap-2 md:gap-5">
+                    {/* Back Button (Mobile Only) */}
+                    <button 
+                        onClick={() => setSelectedUser(null)} 
+                        className="md:hidden text-gray-500 hover:text-gray-700 mr-1 flex items-center justify-center cursor-pointer"
+                    >
+                        <ArrowLeft className="w-6 h-6" />
+                    </button>
+                    <div onClick={onShowInfo} className="flex flex-row gap-3 md:gap-5 items-center cursor-pointer">
+                        <div className="bg-[#202022] shadow-md aspect-square w-12 h-12 flex items-center justify-center rounded-lg relative">
+                            {
+                                selectedUser?.profilePhoto ? (
+                                    <img src={selectedUser?.profilePhoto} alt="Profile Photo" className="w-full h-full object-cover rounded-lg" />
+                                ) : (
+                                    <h3 className="text-white font-semibold text-2xl">{initials}</h3>
+                                )
+                            }
+                            {
+                                onlineUsers.includes(selectedUser._id)&&(
+                                    <div className="absolute bg-green-500 h-3 w-3 rounded-full -bottom-1 -right-1 border-2 border-white"></div>
+                                )
+                            }
+                        </div>
+                        <div className="flex flex-col justify-center gap-0.5">
+                            <h1 className="font-semibold text-lg md:text-xl capitalize">{selectedUser?.fullName}</h1>
+                            <p className="text-[10px] md:text-xs">{onlineUsers.includes(selectedUser._id)?"Online":"Offline"}</p>
+                        </div>
                     </div>
                 </div>
                 <div className="flex flex-row gap-5">
@@ -175,10 +183,6 @@ const ChatScreen = () => {
         </div>
         {
             isImageModalOpen && <ImageModal/>
-        }
-        <IncomingVideoCallPopupModal/>
-        {
-            (isCalling || callAccepted) && <PToPVideoCallModal/>
         }
     </div>
     )

@@ -1,23 +1,19 @@
-import { EllipsisVertical, ImageIcon, Pin, Send } from "lucide-react"
+import { EllipsisVertical, ImageIcon, Pin, Send, ArrowLeft } from "lucide-react"
 import GroupIncomingChatbox from "./GroupIncomingChatbox"
 import { useContext, useEffect, useRef, useState } from "react"
 import { GroupChatContext } from "../context/GroupChatContext"
-import CreateGroupModal from "./CreateGroupModal"
-import MemberSelectModel from "./MemberSelectModel"
+
 import { AuthContext } from "../context/AuthContext"
 import toast from "react-hot-toast"
 import GroupOutgoingChatbox from "./GroupOutgoingChatbox"
 import GroupSystemMessage from "./GroupSystemMessage"
 import GroupOptionsModal from "./GroupOptionsModal"
-import AddGroupMembersModal from "./AddGroupMembersModal"
-import RemoveGroupMembersModal from "./RemoveGroupMembersModal"
-import ClearChatConfirmationModal from "./ClearChatConfirmationModal"
-import GroupUpdateModal from "./GroupUpdateModal"
 
 
-const GroupChatScreen = () => {
 
-    const {setGroupMessages, joinGroup, leaveGroup, setModalType, setIsModalOpen, groupMessages, getGroupMessages, sendGroupMessage, isModalOpen, modalType, selectedGroup, markGroupMessagesSeen} = useContext(GroupChatContext);
+const GroupChatScreen = ({ onShowInfo }) => {
+
+    const {setGroupMessages, joinGroup, leaveGroup, setModalType, setIsModalOpen, groupMessages, getGroupMessages, sendGroupMessage, isModalOpen, modalType, selectedGroup, markGroupMessagesSeen, setSelectedGroup} = useContext(GroupChatContext);
     const {authUser} = useContext(AuthContext);
     const [message, setMessage] = useState("");
     const [image, setImage] = useState(null);
@@ -129,23 +125,31 @@ const GroupChatScreen = () => {
     const isAdmin = selectedGroup?.groupAdmin?._id?.toString() === authUser?._id?.toString();
 
     return (
-        <div className="w-[47%] h-screen py-3">
-            <div className="w-full h-full bg-[#f9fafc] rounded-r-3xl">
+        <div className="w-full h-full">
+            <div className="w-full h-full bg-[#f9fafc] rounded-none md:rounded-r-3xl flex flex-col justify-between overflow-hidden">
                 {
                     selectedGroup ? (
                         <>
                         {/* Top Info Section */}
                 <div className="h-[10%] w-full border-b border-gray-300 p-4 flex flex-row items-center justify-between">
-                    <div className="flex flex-row items-center gap-5">
-                        <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-black">
-                            {
-                                        selectedGroup?.groupIcon ? (
-                                            <img src={selectedGroup?.groupIcon} alt="Profile Photo" className="w-12 h-12 rounded-lg object-cover" />
-                                        ) : (
-                                            <h3 className="bg-[#202022] w-12 h-12 aspect-square flex items-center justify-center rounded-lg text-white font-semibold text-2xl">{initials}</h3>
-                                        )
-                                    }
-                        </div>
+                    <div className="flex flex-row items-center gap-2 md:gap-5">
+                        {/* Back Button (Mobile Only) */}
+                        <button 
+                            onClick={() => setSelectedGroup(null)} 
+                            className="md:hidden text-gray-500 hover:text-gray-700 mr-1 flex items-center justify-center cursor-pointer"
+                        >
+                            <ArrowLeft className="w-6 h-6" />
+                        </button>
+                        <div onClick={onShowInfo} className="flex flex-row gap-3 md:gap-5 items-center cursor-pointer">
+                            <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-black">
+                                {
+                                            selectedGroup?.groupIcon ? (
+                                                <img src={selectedGroup?.groupIcon} alt="Profile Photo" className="w-12 h-12 rounded-lg object-cover" />
+                                            ) : (
+                                                <h3 className="bg-[#202022] w-12 h-12 aspect-square flex items-center justify-center rounded-lg text-white font-semibold text-2xl">{initials}</h3>
+                                            )
+                                        }
+                            </div>
                         <div className="flex flex-col justify-center gap-0.5">
                             <h1 className="font-semibold text-xl capitalize">{selectedGroup?.groupName}</h1>
                             <div className="flex flex-row gap-2">
@@ -154,12 +158,13 @@ const GroupChatScreen = () => {
                             </div>
                         </div>
                     </div>
+                    </div>
                     <div className="flex flex-row items-center gap-5">
                         {
                             selectedGroup?.groupMembers?.some(
                                 (member) => member._id.toString() === authUser._id.toString()
                             ) && (
-                                <div onClick={handleLeaveGroup} className="bg-[#7678ed] text-white text-sm font-medium px-4 py-2 rounded-lg cursor-pointer">Leave Group</div>
+                                <div onClick={handleLeaveGroup} className="hidden md:block bg-[#7678ed] text-white text-sm font-medium px-4 py-2 rounded-lg cursor-pointer">Leave Group</div>
                             )
                         }
                         {
@@ -168,12 +173,12 @@ const GroupChatScreen = () => {
                             ) ? (
                                 <Pin className="text-gray-400 hover:text-gray-600 transition-all cursor-pointer"/>
                             ) : (
-                                <div onClick={handleJoinGroup} className="bg-[#7678ed] text-white text-sm font-medium px-4 py-2 rounded-lg cursor-pointer">Join Group</div>
+                                <div onClick={handleJoinGroup} className="hidden md:block bg-[#7678ed] text-white text-sm font-medium px-4 py-2 rounded-lg cursor-pointer">Join Group</div>
                             )
                         }
                         {
-                            isAdmin && (
-                                <div className="relative">
+                            (isAdmin || true) && (
+                                <div className={isAdmin ? "relative" : "relative md:hidden"}>
                                 <EllipsisVertical onClick={openOptionsHandler} className="text-gray-400 hover:text-gray-600 transition-all cursor-pointer"/>
                                         {
                                             modalType === "group-options" && isModalOpen && (
@@ -237,36 +242,6 @@ const GroupChatScreen = () => {
                     )
                 }
         </div>
-        {
-            modalType === "create-group" && isModalOpen && (
-                <CreateGroupModal/>
-            )
-        }
-        {
-            modalType === "select-members" && isModalOpen && (
-                <MemberSelectModel/>
-            )
-        }
-        {
-            modalType === "add-members" && isModalOpen && (
-                <AddGroupMembersModal/>
-            )
-        }
-        {
-            modalType === "remove-members" && isModalOpen && (
-                <RemoveGroupMembersModal/>
-            )
-        }
-        {
-            modalType === "clear-chat" && isModalOpen && (
-                <ClearChatConfirmationModal/>
-            )
-        }
-        {
-            modalType === "update-group" && isModalOpen && (
-                <GroupUpdateModal/>
-            )
-        }
         </div>
     )
 }

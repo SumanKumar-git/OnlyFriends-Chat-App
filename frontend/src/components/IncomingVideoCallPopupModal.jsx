@@ -13,7 +13,7 @@ const IncomingVideoCallPopupModal = () => {
     }
 
     return (
-        <div className="absolute top-10 bg-white flex flex-row items-center justify-between z-50 shadow-md rounded-xl px-2 w-110 h-15">
+        <div className="fixed top-10 left-1/2 -translate-x-1/2 bg-white flex flex-row items-center justify-between z-50 shadow-md rounded-xl px-4 py-2 w-[calc(100%-2rem)] md:w-110 h-auto md:h-15 gap-4">
             <div className="flex flex-row items-center gap-3">
                 {
                     incomingCall?.callerInfo?.profilePhoto ? (

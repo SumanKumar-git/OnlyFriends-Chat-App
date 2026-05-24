@@ -58,8 +58,8 @@ const GroupUpdateModal = () => {
 
 
     return (
-        <div className="fixed inset-0 bg-black/60 w-full h-screen flex items-center justify-center z-50 backdrop-blur-md">
-            <div className="w-[37%] h-[75%] flex flex-col justify-center items-center bg-white rounded-2xl p-6">
+        <div className="fixed inset-0 bg-black/60 w-full h-screen flex items-center justify-center z-50 backdrop-blur-md p-4">
+            <div className="w-full max-w-lg h-[95%] md:h-[75%] flex flex-col justify-center items-center bg-white rounded-2xl p-6">
                 <div className="h-[15%] w-full">
                     <h1 className="text-3xl font-semibold text-gray-800 tracking-tight">Update Group Details</h1>
                     <p className="text-gray-500 mt-1 text-sm">Update your group details.</p>

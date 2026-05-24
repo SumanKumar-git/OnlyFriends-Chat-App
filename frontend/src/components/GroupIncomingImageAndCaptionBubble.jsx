@@ -1,6 +1,10 @@
 
 
+import { useContext } from "react";
+import { GroupChatContext } from "../context/GroupChatContext";
+
 const GroupIncomingImageAndCaptionBubble = ({isSameSender, message}) => {
+    const { openImageModal } = useContext(GroupChatContext);
     const isPortrait = message?.imageHeight > message?.imageWidth;
     return (
     <div className="w-full flex flex-row items-start justify-start gap-2">
@@ -17,12 +21,12 @@ const GroupIncomingImageAndCaptionBubble = ({isSameSender, message}) => {
             )
         }
         </div>
-        <div className={`bg-[#DCDCFE] w-fit max-w-[70%] p-1 cursor-pointer ${isSameSender ? "rounded-xl" : "rounded-r-xl rounded-bl-xl"} flex flex-col gap-1`}>
+        <div onClick={() => openImageModal(message)} className={`bg-[#DCDCFE] w-fit max-w-[70%] p-1 cursor-pointer ${isSameSender ? "rounded-xl" : "rounded-r-xl rounded-bl-xl"} flex flex-col gap-1`}>
             {
                 !isSameSender &&
             <p className="text-sm font-medium text-blue-600 capitalize pl-1.5">{message.senderId.fullName}</p>
             }
-            <div className= {` ${isPortrait ? "w-52 h-75" : "w-80 h-48"}  rounded-lg overflow-hidden`}>
+            <div className={`${isPortrait ? "w-52" : "w-80"} max-w-full rounded-lg overflow-hidden`} style={{ aspectRatio: isPortrait ? "52/75" : "80/48" }}>
                 <img src={message?.image} alt="chat-image" className="w-full h-full object-cover"/>
             </div>
             <p className="text-sm text-black pl-1.5">{message.text}</p>
