@@ -87,6 +87,7 @@ const ChatScreen = ({ onShowInfo }) => {
     useEffect(() => {
         const loadChat = async () => {
             if(selectedUser){
+                setAllMessages([]);
                 await getMessages(selectedUser._id);
                 await markMessagesSeen(selectedUser._id);
             }

@@ -54,7 +54,7 @@ const Profile = () => {
 
 
     return (
-    <div className="w-full flex-1 md:flex-none h-[calc(100vh-7.5rem)] md:h-screen md:py-3 md:pr-3">
+    <div className="w-full flex-1 md:flex-none md:w-[92%] h-[calc(100vh-7.5rem)] md:h-screen md:py-3 md:pr-3">
         <div className="w-full h-full bg-[#f9fafc] rounded-none md:rounded-3xl overflow-hidden flex flex-col">
             {/* Heading Section */}
             <div className="w-full py-4 border-b border-gray-200 px-6 md:px-8">

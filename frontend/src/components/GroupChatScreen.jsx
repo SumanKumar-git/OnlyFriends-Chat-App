@@ -81,6 +81,7 @@ const GroupChatScreen = ({ onShowInfo }) => {
     useEffect(() => {
             const loadChat = async () => {
                 if(selectedGroup){
+                    setGroupMessages([]);
                     await getGroupMessages(selectedGroup._id);
                     await markGroupMessagesSeen(selectedGroup._id);
                 }
