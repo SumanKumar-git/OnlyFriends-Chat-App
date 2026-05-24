@@ -65,7 +65,7 @@ const Profile = () => {
                 {/* Left side for profile picture and upload */}
                 <div className="flex flex-col items-center gap-4 w-full md:w-[35%]">
                     <div className="relative group">
-                        <div className="bg-[#202022] w-48 h-48 rounded-3xl flex items-center justify-center shadow-md transition-all duration-300 group-hover:shadow-lg">
+                        <div className="bg-[#202022] w-44 h-44 md:w-48 md:h-48 rounded-3xl flex items-center justify-center shadow-md transition-all duration-300 group-hover:shadow-lg">
                             {
                                 authUser?.profilePhoto ? (
                                     <img src={authUser?.profilePhoto} alt="Profile Photo" className="w-full h-full object-cover rounded-3xl" />

@@ -1,4 +1,4 @@
-import { EllipsisVertical, ImageIcon, Pin, Send, ArrowLeft } from "lucide-react"
+import { EllipsisVertical, ImageIcon, Send, ArrowLeft } from "lucide-react"
 import GroupIncomingChatbox from "./GroupIncomingChatbox"
 import { useContext, useEffect, useRef, useState } from "react"
 import { GroupChatContext } from "../context/GroupChatContext"
@@ -169,16 +169,14 @@ const GroupChatScreen = ({ onShowInfo }) => {
                             )
                         }
                         {
-                            selectedGroup?.groupMembers?.some(
+                            !selectedGroup?.groupMembers?.some(
                                 (member) => member._id.toString() === authUser._id.toString()
-                            ) ? (
-                                <Pin className="text-gray-400 hover:text-gray-600 transition-all cursor-pointer"/>
-                            ) : (
+                            ) && (
                                 <div onClick={handleJoinGroup} className="hidden md:block bg-[#7678ed] text-white text-sm font-medium px-4 py-2 rounded-lg cursor-pointer">Join Group</div>
                             )
                         }
                         {
-                            (isAdmin || true) && (
+                            isAdmin && (
                                 <div className={isAdmin ? "relative" : "relative md:hidden"}>
                                 <EllipsisVertical onClick={openOptionsHandler} className="text-gray-400 hover:text-gray-600 transition-all cursor-pointer"/>
                                         {

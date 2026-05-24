@@ -1,4 +1,4 @@
-import { EllipsisVertical, Pin, Send, Image as ImageIcon, Video, ArrowLeft } from "lucide-react";
+import { EllipsisVertical, Send, Image as ImageIcon, Video, ArrowLeft } from "lucide-react";
 import IncomingChatbox from "./IncomingChatbox";
 import OutgoingChatbox from "./OutgoingChatbox";
 import { useContext, useEffect, useRef, useState } from "react";
@@ -142,7 +142,6 @@ const ChatScreen = ({ onShowInfo }) => {
                 </div>
                 <div className="flex flex-row gap-5">
                     <Video onClick={() => startCall(selectedUser)} className="text-gray-400 hover:text-gray-600 transition-all cursor-pointer"/>
-                    <Pin className="text-gray-400 hover:text-gray-600 transition-all cursor-pointer"/>
                     <EllipsisVertical className="text-gray-400 hover:text-gray-600 transition-all cursor-pointer"/>
                 </div>
             </div>
