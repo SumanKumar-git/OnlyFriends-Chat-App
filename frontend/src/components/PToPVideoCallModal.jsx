@@ -1,13 +1,11 @@
 import { useContext, useState, useEffect } from "react";
 import { CallContext } from "../context/CallContext";
-import { ChatContext } from "../context/ChatContext";
 import { AuthContext } from "../context/AuthContext";
 import { Mic, MicOff, Video as VideoIcon, VideoOff, PhoneOff, Volume2, VolumeX } from "lucide-react";
 
 const PToPVideoCallModal = () => {
-    const {selectedUser} = useContext(ChatContext);
     const {authUser} = useContext(AuthContext);
-    const {localVideoRef, remoteVideoRef, localStream, remoteStream, endCall} = useContext(CallContext);
+    const {localVideoRef, remoteVideoRef, localStream, remoteStream, endCall, callPartner} = useContext(CallContext);
 
     // Local UI states for call interaction design
     const [isMicMuted, setIsMicMuted] = useState(false);
@@ -30,8 +28,8 @@ const PToPVideoCallModal = () => {
         }
     }, [remoteStream, remoteVideoRef]);
 
-    const initials = selectedUser?.fullName
-        ? selectedUser.fullName
+    const initials = callPartner?.fullName
+        ? callPartner.fullName
               .split(" ")
               .map((word) => word[0])
               .join("")
@@ -49,15 +47,15 @@ const PToPVideoCallModal = () => {
                 {/* Caller Information */}
                 <div className="bg-[#1b1b22]/80 backdrop-blur-md border border-white/5 pl-2 pr-5 py-2 rounded-full flex items-center gap-3 text-white shadow-lg shadow-black/20">
                     <div className="bg-[#7678ed] w-10 h-10 aspect-square rounded-full flex items-center justify-center font-bold text-base shadow-inner relative">
-                        {selectedUser?.profilePhoto ? (
-                            <img src={selectedUser.profilePhoto} alt={selectedUser.fullName} className="w-full h-full rounded-full object-cover" />
+                        {callPartner?.profilePhoto ? (
+                            <img src={callPartner.profilePhoto} alt={callPartner.fullName} className="w-full h-full rounded-full object-cover" />
                         ) : (
                             <span>{initials}</span>
                         )}
                         <div className="absolute bg-green-500 h-2.5 w-2.5 rounded-full bottom-0 right-0 border-2 border-[#1b1b22] animate-pulse"></div>
                     </div>
                     <div className="flex flex-col">
-                        <span className="font-semibold text-sm capitalize">{selectedUser?.fullName || "User"}</span>
+                        <span className="font-semibold text-sm capitalize">{callPartner?.fullName || "User"}</span>
                         <span className="text-[10px] text-emerald-400 font-medium tracking-wide flex items-center gap-1">
                             <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 inline-block animate-ping"></span>
                             Live Connection
@@ -116,6 +114,7 @@ const PToPVideoCallModal = () => {
                         playsInline
                         onPlaying={() => setIsRemoteVideoActive(true)}
                         onLoadedMetadata={() => setIsRemoteVideoActive(true)}
+                        muted = {isCallMuted}
                     />
 
                     {/* Remote User Placeholder (Visible if remote video stream is inactive / loading) */}
@@ -126,15 +125,15 @@ const PToPVideoCallModal = () => {
                                 <div className="absolute w-44 h-44 rounded-full bg-[#7678ed]/20 animate-ping opacity-60"></div>
                                 <div className="absolute w-56 h-56 rounded-full bg-[#7678ed]/10 animate-pulse opacity-40"></div>
                                 <div className="relative bg-[#202022] w-32 h-32 rounded-full border-4 border-white/10 shadow-2xl flex items-center justify-center overflow-hidden">
-                                    {selectedUser?.profilePhoto ? (
-                                        <img src={selectedUser.profilePhoto} alt={selectedUser.fullName} className="w-full h-full object-cover" />
+                                    {callPartner?.profilePhoto ? (
+                                        <img src={callPartner?.profilePhoto} alt={callPartner?.fullName} className="w-full h-full object-cover" />
                                     ) : (
                                         <h3 className="text-white font-bold text-4xl">{initials}</h3>
                                     )}
                                 </div>
                             </div>
                             <h2 className="text-white/95 font-semibold text-lg mt-6 capitalize tracking-wide">
-                                {selectedUser?.fullName || "User"}
+                                {callPartner?.fullName || "User"}
                             </h2>
                             <p className="text-white/40 text-xs mt-1.5 tracking-widest uppercase">
                                 Connecting video feed...
@@ -145,7 +144,7 @@ const PToPVideoCallModal = () => {
                     {/* Remote User Name Badge (Visible in split view) */}
                     {selectedLayout === "split" && (
                         <div className="absolute bottom-4 left-4 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full text-xs font-semibold text-white border border-white/10 shadow-lg select-none z-20">
-                            {selectedUser?.fullName || "User"}
+                            {callPartner?.fullName || "User"}
                         </div>
                     )}
                 </div>
@@ -246,7 +245,7 @@ const PToPVideoCallModal = () => {
 
                         {/* End Call Button */}
                         <button
-                            onClick={() => endCall(selectedUser._id)}
+                            onClick={() => endCall(callPartner?._id)}
                             className="w-14 h-14 bg-red-600 hover:bg-red-700 text-white rounded-full flex items-center justify-center transition-all duration-200 cursor-pointer shadow-lg shadow-red-900/40 hover:scale-110 active:scale-95"
                             title="End Call"
                         >

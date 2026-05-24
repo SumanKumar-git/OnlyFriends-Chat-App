@@ -132,7 +132,7 @@ const ChatScreen = () => {
                     </div>
                 </div>
                 <div className="flex flex-row gap-5">
-                    <Video onClick={() => startCall(selectedUser._id)} className="text-gray-400 hover:text-gray-600 transition-all cursor-pointer"/>
+                    <Video onClick={() => startCall(selectedUser)} className="text-gray-400 hover:text-gray-600 transition-all cursor-pointer"/>
                     <Pin className="text-gray-400 hover:text-gray-600 transition-all cursor-pointer"/>
                     <EllipsisVertical className="text-gray-400 hover:text-gray-600 transition-all cursor-pointer"/>
                 </div>

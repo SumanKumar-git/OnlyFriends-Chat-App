@@ -1,12 +1,13 @@
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { AuthContext } from "./AuthContext";
+import toast from "react-hot-toast";
 
 
 export const CallContext = createContext();
 
 export const CallContextProvider = ({children}) => {
 
-    const {socket, authUser} = useContext(AuthContext);
+    const {socket, authUser, onlineUsers} = useContext(AuthContext);
 
     const localVideoRef = useRef();
     const remoteVideoRef = useRef();
@@ -14,6 +15,7 @@ export const CallContextProvider = ({children}) => {
     const [callAccepted, setCallAccepted] = useState(false);
     const [callEnded, setCallEnded] = useState(false);
     const [isCalling, setIsCalling] = useState(false);
+    const [callPartner, setCallPartner] = useState(null);
     const pendingCandidates = useRef([]);
 
     const peerConnection = useRef(null);
@@ -123,14 +125,23 @@ export const CallContextProvider = ({children}) => {
         }
     };
 
-    const startCall = async (remoteUserId) => {
+    const startCall = async (remoteUser) => {
         try {
+            const remoteUserId = remoteUser._id;
+            
+            if (!onlineUsers.includes(remoteUserId)) {
+                toast.error(`${remoteUser.fullName || "User"} is offline`);
+                return;
+            }
+
+            setCallPartner(remoteUser);
             setIsCalling(true);
             setCallEnded(false);
             const stream = await getMedia();
             if (!stream) {
                 console.error("Failed to get media stream");
                 setIsCalling(false);
+                setCallPartner(null);
                 return;
             }
             createPeerConnection();
@@ -154,6 +165,7 @@ export const CallContextProvider = ({children}) => {
             console.error("Error starting call:", error);
             setIsCalling(false);
             setCallEnded(true);
+            setCallPartner(null);
         }
     };
 
@@ -161,7 +173,6 @@ export const CallContextProvider = ({children}) => {
     useEffect(() => {
         if(!socket) return;
         socket.on("incoming-call", ({from, offer, callerInfo}) => {
-            console.log("Incoming Call:", {from, offer, callerInfo});
             setIncomingCall({from, offer, callerInfo});
         });
         return () => {
@@ -173,10 +184,14 @@ export const CallContextProvider = ({children}) => {
         try {
             if (!incomingCall) return;
 
+            const partnerInfo = incomingCall.callerInfo;
+            setCallPartner(partnerInfo);
+
             const stream = await getMedia();
             if (!stream) {
                 console.error("Failed to get media stream for accepting call");
                 setIncomingCall(null);
+                setCallPartner(null);
                 return;
             }
             createPeerConnection();
@@ -213,6 +228,7 @@ export const CallContextProvider = ({children}) => {
         } catch (error) {
             console.error("Error accepting call:", error);
             setIncomingCall(null);
+            setCallPartner(null);
             setCallAccepted(false);
             setIsCalling(false);
         }
@@ -221,10 +237,12 @@ export const CallContextProvider = ({children}) => {
     const rejectCall = () => {
         if (incomingCall) {
             socket.emit("reject-call", {
-                to: incomingCall.from
+                to: incomingCall.from,
+                rejectedBy: authUser.fullName
             });
         }
         setIncomingCall(null);
+        setCallPartner(null);
     };
 
     // receive answer
@@ -281,12 +299,13 @@ export const CallContextProvider = ({children}) => {
     // listen call rejection
     useEffect(() => {
         if(!socket) return;
-        socket.on("call-rejected", () => {
-            console.log("Call Rejected by recipient");
+        socket.on("call-rejected", ({rejectedBy}) => {
+            toast.error(`${rejectedBy} rejected the call`);
             setCallEnded(true);
             setIsCalling(false);
             setCallAccepted(false);
             setIncomingCall(null);
+            setCallPartner(null);
             setLocalStream(null);
             setRemoteStream(null);
             if (peerConnection.current) {
@@ -307,12 +326,13 @@ export const CallContextProvider = ({children}) => {
     // listen call ended
     useEffect(() => {
         if(!socket) return;
-        socket.on("call-ended", () => {
-            console.log("Call Ended by remote user");
+        socket.on("call-ended", ({endedBy}) => {
+            toast.error(`Call ended by ${endedBy}`)
             setCallEnded(true);
             setIsCalling(false);
             setCallAccepted(false);
             setIncomingCall(null);
+            setCallPartner(null);
             setLocalStream(null);
             setRemoteStream(null);
             if (peerConnection.current) {
@@ -335,6 +355,7 @@ export const CallContextProvider = ({children}) => {
         setIsCalling(false);
         setCallAccepted(false);
         setIncomingCall(null);
+        setCallPartner(null);
         setLocalStream(null);
         setRemoteStream(null);
         if (peerConnection.current) {
@@ -348,6 +369,7 @@ export const CallContextProvider = ({children}) => {
         remoteStreamRef.current = null;
         socket.emit("end-call", {
             to: remoteUserId,
+            endedBy: authUser.fullName
         });
     };
 
@@ -366,6 +388,7 @@ export const CallContextProvider = ({children}) => {
             remoteStreamRef.current = null;
             setLocalStream(null);
             setRemoteStream(null);
+            setCallPartner(null);
         };
     }, []);
 
@@ -384,7 +407,8 @@ export const CallContextProvider = ({children}) => {
         setCallAccepted,
         setIsCalling,
         localStream,
-        remoteStream
+        remoteStream,
+        callPartner
     }
     return (
         <CallContext.Provider value={value}>

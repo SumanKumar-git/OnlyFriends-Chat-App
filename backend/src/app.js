@@ -79,12 +79,12 @@ io.on("connection", async (socket) => {
         });
     });
 
-    socket.on("reject-call", ({to}) => {
+    socket.on("reject-call", ({to, rejectedBy}) => {
         const callerSocketId = userSocketMap[to];
         if(!callerSocketId){
             return;
         }
-        io.to(callerSocketId).emit("call-rejected");
+        io.to(callerSocketId).emit("call-rejected", {rejectedBy});
     });
 
     socket.on("ice-candidate", ({to, candidate}) => {
@@ -97,12 +97,12 @@ io.on("connection", async (socket) => {
         });
     });
 
-    socket.on("end-call", ({to}) => {
+    socket.on("end-call", ({to, endedBy}) => {
         const receiverSocketId = userSocketMap[to];
         if(!receiverSocketId){
             return
         };
-        io.to(receiverSocketId).emit("call-ended");
+        io.to(receiverSocketId).emit("call-ended", {endedBy});
     })
 
     socket.on("disconnect", () => {
