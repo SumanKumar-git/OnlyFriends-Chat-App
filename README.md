@@ -4,6 +4,12 @@ A real-time full-stack chat application built using the MERN stack with WebRTC s
 
 ---
 
+## Website Link
+
+https://onlyfriends-chat-app.vercel.app/
+
+---
+
 ## 🚀 Features
 
 * 🔐 User Authentication (Login / Register)
@@ -15,7 +21,6 @@ A real-time full-stack chat application built using the MERN stack with WebRTC s
 * ✉️ Last Message Preview
 * 📷 Profile Picture Upload
 * ⚡ Real-time Messaging using Socket.IO
-* 📱 Responsive UI
 * ☁️ Cloud-based Deployment
 
 ---
